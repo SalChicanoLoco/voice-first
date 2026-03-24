@@ -1,6 +1,4 @@
-export default {
-  async fetch(request) {
-    return new Response(`<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -88,7 +86,7 @@ hr{border:none;border-top:1px solid var(--b);margin:14px 0;}
 .tvp-pill.on{background:rgba(124,106,247,.12);border-color:var(--a);color:var(--a);}
 .tvp-auto{display:flex;align-items:center;gap:7px;margin-bottom:8px;}
 .tvp-al{font-size:.65rem;color:var(--m);flex:1;}
-.tvp-last{background:#0d0d0f;border:1px dashed var(--b);border-radius:5px;padding:4px 8px;font-size:.65rem;color:#a8a8c0;margin-bottom:8px;overflow:hidden;max-height:34px;}
+.tvp-last{background:#0d0d0f;border:1px dashed var(--b);border-radius:5px;padding:4px 8px;font-size:.65rem;color:#a8a8c0;margin-bottom:8px;overflow:hidden;max-height:34px;display:none;}
 .tvp-ctls{display:flex;gap:5px;}
 .tvp-btn{flex:1;padding:5px;border-radius:5px;border:none;font-size:.7rem;font-weight:700;cursor:pointer;}
 .tvp-sp{background:var(--a);color:#fff;}
@@ -108,8 +106,6 @@ hr{border:none;border-top:1px solid var(--b);margin:14px 0;}
   <div class="tab" onclick="showTab('test',this)">🧪 Tests</div>
 </div>
 <div class="main">
-
-<!-- VOICE -->
 <div class="pane on" id="pane-voice">
   <div class="mbar">
     <span style="font-size:.72rem;font-weight:700;color:var(--m)">Engine:</span>
@@ -117,9 +113,8 @@ hr{border:none;border-top:1px solid var(--b);margin:14px 0;}
       <button class="tbtn na" id="btnN" onclick="setMode('native')">🔊 Native</button>
       <button class="tbtn" id="btnEL" onclick="setMode('elevenlabs')">⚡ ElevenLabs</button>
     </div>
-    <div id="elKeyWrap" style="display:none;flex:1;min-width:200px;display:none;gap:8px;align-items:center;">
-      <input type="password" id="elApiKey" placeholder="ElevenLabs API key…" oninput="localStorage.setItem('sena_el_key',this.value)"
-        style="flex:1;background:#0d0d0f;border:1px solid rgba(245,166,35,.3);color:var(--t);border-radius:6px;padding:5px 9px;font-size:.72rem;outline:none;">
+    <div id="elKeyWrap" style="display:none;flex:1;min-width:200px;gap:8px;align-items:center;">
+      <input type="password" id="elApiKey" placeholder="ElevenLabs API key…" oninput="localStorage.setItem('sena_el_key',this.value)" style="flex:1;background:#0d0d0f;border:1px solid rgba(245,166,35,.3);color:var(--t);border-radius:6px;padding:5px 9px;font-size:.72rem;outline:none;">
       <span style="font-size:.62rem;padding:2px 7px;border-radius:20px;background:rgba(245,166,35,.1);color:var(--el);border:1px solid rgba(245,166,35,.3);white-space:nowrap;">local only</span>
     </div>
   </div>
@@ -135,9 +130,9 @@ hr{border:none;border-top:1px solid var(--b);margin:14px 0;}
     </div>
   </div>
   <div id="elTuning" style="display:none">
-    <div class="lbl">EL Voice ID — active profile</div>
+    <div class="lbl">EL Voice ID</div>
     <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">
-      <input type="text" id="elVId" placeholder="Voice ID…" oninput="saveElId()" style="flex:1;background:#0d0d0f;border:1px solid rgba(245,166,35,.25);color:var(--t);border-radius:6px;padding:5px 9px;font-size:.78rem;outline:none;">
+      <input type="text" id="elVId" placeholder="Voice ID for active profile…" oninput="saveElId()" style="flex:1;background:#0d0d0f;border:1px solid rgba(245,166,35,.25);color:var(--t);border-radius:6px;padding:5px 9px;font-size:.78rem;outline:none;">
       <span id="elVName" style="font-size:.62rem;padding:2px 7px;border-radius:20px;background:rgba(245,166,35,.1);color:var(--el);border:1px solid rgba(245,166,35,.3);">—</span>
     </div>
     <div class="srow">
@@ -157,8 +152,6 @@ hr{border:none;border-top:1px solid var(--b);margin:14px 0;}
   <div class="lbl">Transcript</div>
   <div class="trbox" id="trbox">Transcript appears here after using Listen…</div>
 </div>
-
-<!-- EMBED -->
 <div class="pane" id="pane-embed">
   <div class="lbl">Simulated NUMARA Output</div>
   <div class="demo-out" id="demoOut">Aria is watching this container. Enable Auto-speak on the panel then hit a sim button.</div>
@@ -172,11 +165,9 @@ hr{border:none;border-top:1px solid var(--b);margin:14px 0;}
     The floating panel ⬡ (bottom-right) watches <code style="color:var(--a)">#demoOut</code> via MutationObserver. Point <code style="color:var(--a)">TV_CONFIG.target</code> at NUMARA's output container to embed.
   </div>
 </div>
-
-<!-- TEST -->
 <div class="pane" id="pane-test">
   <div class="th">
-    <div><div style="font-size:.8rem;font-weight:700;">Team QA Suite</div><div style="font-size:.65rem;color:var(--m);">Sprint 003 · All Lanes · 16 tests</div></div>
+    <div><div style="font-size:.8rem;font-weight:700;">Team QA Suite</div><div style="font-size:.65rem;color:var(--m);">Sprint 003 · 16 tests</div></div>
     <div class="sc">
       <span style="color:var(--g)">✅ <span id="tP">0</span></span>
       <span style="color:var(--d)">❌ <span id="tF">0</span></span>
@@ -189,10 +180,8 @@ hr{border:none;border-top:1px solid var(--b);margin:14px 0;}
   <div id="testList"></div>
   <div class="cbox" id="cbox" style="display:none"></div>
 </div>
+</div>
 
-</div><!-- /main -->
-
-<!-- FLOATING PANEL -->
 <div id="tvp">
   <div id="tvp-h" onclick="document.getElementById('tvp').classList.toggle('coll')">
     <span style="color:var(--a)">⬡</span>
@@ -204,11 +193,11 @@ hr{border:none;border-top:1px solid var(--b);margin:14px 0;}
     <div class="tvp-pills" id="tvpPills"></div>
     <div class="tvp-auto">
       <span class="tvp-al">Auto-speak output</span>
-      <div id="tvpSwitch" onclick="tvpToggleAuto()" style="width:28px;height:16px;border-radius:16px;background:rgba(124,106,247,.35);cursor:pointer;position:relative;transition:background .3s;">
+      <div id="tvpSw" onclick="tvpToggleAuto()" style="width:28px;height:16px;border-radius:16px;background:rgba(124,106,247,.35);cursor:pointer;position:relative;transition:background .3s;">
         <div id="tvpKnob" style="position:absolute;top:2px;left:14px;width:12px;height:12px;border-radius:50%;background:var(--a);transition:left .3s;"></div>
       </div>
     </div>
-    <div class="tvp-last" id="tvpLast" style="display:none"></div>
+    <div class="tvp-last" id="tvpLast"></div>
     <div class="tvp-ctls">
       <button class="tvp-btn tvp-sp" onclick="tvpSpeak()">▶ Speak</button>
       <button class="tvp-btn tvp-st" onclick="speechSynthesis.cancel()">■</button>
@@ -227,7 +216,7 @@ const DEFS=[
   {id:'quetzal', name:'Quetzal', role:'Data',     tags:['neutral'],      rate:1,  pitch:.95, vol:1,hint:'Male',  elId:'TxGEqnHWrfWFTfGW9XjX',elName:'Josh'  },
   {id:'guest',   name:'Guest',   role:'Visitor',  tags:['gentle','slow'],rate:.85,pitch:1.15,vol:.9,hint:'Female',elId:'MF3mGyEYCl7XYWbV9V6O',elName:'Elli'  },
 ];
-let profiles=loadP(),activeId='aria',mode='native',voices=[],recog=null,isListening=false,elAudio=null,tvpId='aria',tvpAuto=true,tvpLast='';
+let profiles=loadP(),activeId='aria',mode='native',voices=[],recog=null,isListening=false,elAudio=null,tvpId='aria',tvpAuto=true,tvpLastTxt='';
 function loadP(){try{const s=localStorage.getItem(PKEY);return s?JSON.parse(s):JSON.parse(JSON.stringify(DEFS));}catch{return JSON.parse(JSON.stringify(DEFS));}}
 function saveP(){localStorage.setItem(PKEY,JSON.stringify(profiles));}
 const getP=(id)=>profiles.find(x=>x.id===(id||activeId));
@@ -240,8 +229,7 @@ function showTab(t,el){
 }
 
 function renderProfiles(){
-  const g=document.getElementById('pgrid');
-  g.innerHTML=profiles.map(p=>`
+  document.getElementById('pgrid').innerHTML=profiles.map(p=>`
     <div class="pc${p.id===activeId?' on':''}" onclick="activateProfile('${p.id}')">
       <div class="adot"></div>
       <div class="pc-n">${p.name}</div><div class="pc-r">${p.role}</div>
@@ -274,8 +262,7 @@ function setMode(m){
   mode=m;
   document.getElementById('btnN').className='tbtn'+(m==='native'?' na':'');
   document.getElementById('btnEL').className='tbtn'+(m==='elevenlabs'?' el':'');
-  const ew=document.getElementById('elKeyWrap');
-  ew.style.display=m==='elevenlabs'?'flex':'none';
+  document.getElementById('elKeyWrap').style.display=m==='elevenlabs'?'flex':'none';
   document.getElementById('nativeTuning').style.display=m==='native'?'block':'none';
   document.getElementById('elTuning').style.display=m==='elevenlabs'?'block':'none';
   const sb=document.getElementById('speakBtn');
@@ -290,7 +277,7 @@ setTimeout(loadVoices,400);
 function loadVoices(){
   voices=speechSynthesis.getVoices();
   const sel=document.getElementById('voiceSelect');
-  sel.innerHTML=voices.length?voices.map(v=>'<option value="'+v.name+'">'+v.name+' ('+v.lang+')</option>').join(''):'<option>No voices</option>';
+  sel.innerHTML=voices.length?voices.map(v=>'<option value="'+v.name+'">'+v.name+' ('+v.lang+')</option>').join(''):'<option>No voices found</option>';
   matchHint(getP().hint);
 }
 function matchHint(h){
@@ -361,18 +348,16 @@ function toggleMic(){
 
 function setStatus(msg,state){
   document.getElementById('hStatus').textContent=msg;
-  const d=document.getElementById('hDot');
-  d.className='dot'+(state?' '+state:'');
+  document.getElementById('hDot').className='dot'+(state?' '+state:'');
 }
 
-// TVP
 function tvpRenderPills(){
   document.getElementById('tvpPills').innerHTML=profiles.map(p=>'<div class="tvp-pill'+(p.id===tvpId?' on':'')+'" onclick="tvpSetP(\''+p.id+'\')">'+p.name+'</div>').join('');
 }
 function tvpSetP(id){tvpId=id;tvpRenderPills();document.getElementById('tvpSl').textContent='Ready · '+getP(id).name;}
 function tvpToggleAuto(){
   tvpAuto=!tvpAuto;
-  document.getElementById('tvpSwitch').style.background=tvpAuto?'rgba(124,106,247,.35)':'#2a2a35';
+  document.getElementById('tvpSw').style.background=tvpAuto?'rgba(124,106,247,.35)':'#2a2a35';
   document.getElementById('tvpKnob').style.left=tvpAuto?'14px':'2px';
   document.getElementById('tvpKnob').style.background=tvpAuto?'var(--a)':'#6b6b80';
 }
@@ -382,9 +367,8 @@ function tvpSpeak(txt){
   const v=getVoice(p.hint);if(v)utt.voice=v;utt.rate=p.rate;utt.pitch=p.pitch;utt.volume=p.vol;
   utt.onstart=()=>{document.getElementById('tvpDot').className='tvp-d sp';document.getElementById('tvpSl').textContent='Speaking · '+p.name;};
   utt.onend=()=>{document.getElementById('tvpDot').className='tvp-d';document.getElementById('tvpSl').textContent='Done · '+p.name;};
-  const prev=t.length>55?t.slice(0,55)+'…':t;
-  const tl=document.getElementById('tvpLast');tl.textContent=prev;tl.style.display='block';
-  tvpLast=t;speechSynthesis.speak(utt);
+  const tl=document.getElementById('tvpLast');tl.textContent=t.length>55?t.slice(0,55)+'…':t;tl.style.display='block';
+  tvpLastTxt=t;speechSynthesis.speak(utt);
 }
 function tvpMic(){
   if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window))return;
@@ -394,7 +378,6 @@ function tvpMic(){
   r.start();
 }
 
-// Observer
 const tvpTarget=document.getElementById('demoOut');
 if(tvpTarget){
   let lastTxt='';
@@ -405,16 +388,14 @@ if(tvpTarget){
   }).observe(tvpTarget,{childList:true,subtree:true,characterData:true});
 }
 
-// Sims
 const SIMS={
-  grant:'Grant Assistant: NEA application updated. Section 3 — Artistic Merit scores 94 out of 100. Strengthen the community impact narrative before final submission.',
-  gis:'GIS Preflight: 3 layers loaded. CRS verified — EPSG 4326. No conflicts detected. 847 features in bounds. Ready for analysis.',
-  data:'Quetzal report: NUMARA API averaging 210ms. Cache hit rate 87%. Recommend indexing project_id for optimization.',
+  grant:'Grant Assistant: NEA application updated. Section 3 — Artistic Merit scores 94 out of 100. Strengthen community impact narrative before submission.',
+  gis:'GIS Preflight: 3 layers loaded. CRS verified EPSG 4326. No conflicts. 847 features in bounds. Ready.',
+  data:'Quetzal: NUMARA API avg 210ms. Cache hit 87%. Recommend indexing project_id.',
   clear:'Output cleared.'
 };
 function sim(t){document.getElementById('demoOut').textContent=SIMS[t]||'';}
 
-// TESTS
 const TESTS=[
   {id:'tts',cat:'Native',label:'Web Speech TTS API present'},
   {id:'stt',cat:'Native',label:'Web Speech STT API present'},
@@ -422,16 +403,16 @@ const TESTS=[
   {id:'speak',cat:'Native',label:'TTS fires and completes'},
   {id:'rate',cat:'Native',label:'Rate 0.5–2.0 accepted'},
   {id:'pitch',cat:'Native',label:'Pitch 0.5–2.0 accepted'},
-  {id:'stop',cat:'Controls',label:'speechSynthesis.cancel() works'},
+  {id:'stop',cat:'Controls',label:'cancel() works'},
   {id:'audio',cat:'Controls',label:'Audio.pause() available'},
   {id:'pswitch',cat:'Profiles',label:'Profile params correct'},
   {id:'lsave',cat:'Profiles',label:'localStorage R/W'},
   {id:'lpload',cat:'Profiles',label:'Profiles in memory'},
-  {id:'elids',cat:'ElevenLabs',label:'All profiles have EL voice IDs'},
+  {id:'elids',cat:'ElevenLabs',label:'All profiles have EL IDs'},
   {id:'toggle',cat:'ElevenLabs',label:'Mode toggle works'},
   {id:'obs',cat:'Embed',label:'MutationObserver available'},
-  {id:'tvppills',cat:'Embed',label:'All profile pills rendered'},
-  {id:'tvpspeak',cat:'Embed',label:'Panel TTS pathway works'},
+  {id:'tvppills',cat:'Embed',label:'Profile pills rendered'},
+  {id:'tvpspeak',cat:'Embed',label:'Panel TTS works'},
 ];
 const SI={idle:'⬜',run:'🔄',pass:'✅',fail:'❌',warn:'⚠️',skip:'⏭️'};
 let tRes={},tLog=[];
@@ -452,8 +433,7 @@ function setT(id,s,msg=''){
   tRes[id]={s,msg};
   document.getElementById('ti-'+id).textContent=SI[s];
   document.getElementById('tm-'+id).textContent=msg;
-  const row=document.getElementById('tr-'+id);
-  row.className='tr'+(s==='pass'?' pass':s==='fail'?' fail':s==='warn'?' warn':'');
+  document.getElementById('tr-'+id).className='tr'+(s==='pass'?' pass':s==='fail'?' fail':s==='warn'?' warn':'');
   tLog.push({s,text:'['+id+'] '+msg});
   updateScore();
   const cb=document.getElementById('cbox');cb.style.display='block';
@@ -462,11 +442,12 @@ function setT(id,s,msg=''){
 }
 
 function updateScore(){
-  const vals=Object.values(tRes);
-  const p=vals.filter(r=>r.s==='pass').length,f=vals.filter(r=>r.s==='fail').length,w=vals.filter(r=>r.s==='warn').length,sk=vals.filter(r=>r.s==='skip').length;
-  document.getElementById('tP').textContent=p;document.getElementById('tF').textContent=f;
-  document.getElementById('tW').textContent=w;document.getElementById('tS').textContent=sk;
-  document.getElementById('sbar').style.width=(p/TESTS.length*100)+'%';
+  const v=Object.values(tRes);
+  document.getElementById('tP').textContent=v.filter(r=>r.s==='pass').length;
+  document.getElementById('tF').textContent=v.filter(r=>r.s==='fail').length;
+  document.getElementById('tW').textContent=v.filter(r=>r.s==='warn').length;
+  document.getElementById('tS').textContent=v.filter(r=>r.s==='skip').length;
+  document.getElementById('sbar').style.width=(v.filter(r=>r.s==='pass').length/TESTS.length*100)+'%';
 }
 
 function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
@@ -474,81 +455,28 @@ function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 async function runTests(){
   document.getElementById('runBtn').disabled=true;document.getElementById('runBtn').textContent='🔄 Running…';
   initTests();
-
-  setT('tts','run');await sleep(150);
-  setT('tts','speechSynthesis' in window?'pass':'fail','speechSynthesis' in window?'Available':'Not found — use Chrome');
-
-  setT('stt','run');await sleep(150);
-  const hasSR='webkitSpeechRecognition' in window||'SpeechRecognition' in window;
-  setT('stt',hasSR?'pass':'warn',hasSR?'Available':'Chrome required');
-
-  setT('voices','run');await sleep(500);
-  const v=speechSynthesis.getVoices();
-  setT('voices',v.length>0?'pass':'warn',v.length+' voices loaded');
-
+  setT('tts','run');await sleep(150);setT('tts','speechSynthesis' in window?'pass':'fail','speechSynthesis' in window?'Available':'Not found');
+  setT('stt','run');await sleep(150);const hasSR='webkitSpeechRecognition' in window||'SpeechRecognition' in window;setT('stt',hasSR?'pass':'warn',hasSR?'Available':'Chrome required');
+  setT('voices','run');await sleep(500);const v=speechSynthesis.getVoices();setT('voices',v.length>0?'pass':'warn',v.length+' voices loaded');
   setT('speak','run');
-  try{
-    let done=false;const utt=new SpeechSynthesisUtterance('Voice first. Sena AI Tech.');
-    utt.volume=.4;utt.onend=()=>done=true;utt.onerror=()=>done=true;
-    speechSynthesis.speak(utt);let w=0;while(!done&&w<5000){await sleep(200);w+=200;}
-    setT('speak',done?'pass':'warn',done?'Fired and completed':'Timeout — needs user gesture');
-  }catch(e){setT('speak','fail',e.message);}
-
-  setT('rate','run');await sleep(150);
-  try{const u=new SpeechSynthesisUtterance('r');u.rate=.5;u.volume=0;speechSynthesis.speak(u);speechSynthesis.cancel();setT('rate','pass','0.5–2.0 accepted');}
-  catch(e){setT('rate','fail',e.message);}
-
-  setT('pitch','run');await sleep(150);
-  try{const u=new SpeechSynthesisUtterance('p');u.pitch=2;u.volume=0;speechSynthesis.speak(u);speechSynthesis.cancel();setT('pitch','pass','0.5–2.0 accepted');}
-  catch(e){setT('pitch','fail',e.message);}
-
-  setT('stop','run');await sleep(150);
-  try{const u=new SpeechSynthesisUtterance('x');speechSynthesis.speak(u);speechSynthesis.cancel();setT('stop',!speechSynthesis.speaking?'pass':'fail',!speechSynthesis.speaking?'cancel() confirmed':'Still speaking!');}
-  catch(e){setT('stop','fail',e.message);}
-
-  setT('audio','run');await sleep(100);
-  try{new Audio().pause();setT('audio','pass','Audio.pause() available');}
-  catch(e){setT('audio','fail',e.message);}
-
-  setT('pswitch','run');await sleep(150);
-  const aria=profiles.find(x=>x.id==='aria');
-  setT('pswitch',aria?.rate===1.1?'pass':'fail','Aria rate='+aria?.rate+' pitch='+aria?.pitch);
-
-  setT('lsave','run');await sleep(150);
-  try{localStorage.setItem('sena_vf_test','{"ok":true}');const b=JSON.parse(localStorage.getItem('sena_vf_test'));localStorage.removeItem('sena_vf_test');setT('lsave',b.ok?'pass':'fail',b.ok?'R/W OK':'Mismatch');}
-  catch(e){setT('lsave','fail',e.message);}
-
-  setT('lpload','run');await sleep(150);
-  setT('lpload','pass',profiles.length+' profiles in memory');
-
-  setT('elids','run');await sleep(150);
-  const miss=profiles.filter(p=>!p.elId);
-  setT('elids',miss.length===0?'pass':'fail',miss.length===0?'All '+profiles.length+' have IDs':'Missing: '+miss.map(p=>p.name).join(', '));
-
-  setT('toggle','run');await sleep(150);
-  setT('toggle','pass','Native ↔ ElevenLabs cycles correctly');
-
-  setT('obs','run');await sleep(150);
-  setT('obs',typeof MutationObserver!=='undefined'?'pass':'fail',typeof MutationObserver!=='undefined'?'Available':'Not supported');
-
-  setT('tvppills','run');await sleep(150);
-  const pills=document.querySelectorAll('.tvp-pill');
-  setT('tvppills',pills.length===profiles.length?'pass':'fail',pills.length+'/'+profiles.length+' pills rendered');
-
-  setT('tvpspeak','run');await sleep(150);
-  try{const u=new SpeechSynthesisUtterance('test');u.volume=0;speechSynthesis.speak(u);speechSynthesis.cancel();setT('tvpspeak','pass','Panel TTS pathway OK');}
-  catch(e){setT('tvpspeak','fail',e.message);}
-
+  try{let done=false;const u=new SpeechSynthesisUtterance('Voice first. Sena AI Tech.');u.volume=.4;u.onend=()=>done=true;u.onerror=()=>done=true;speechSynthesis.speak(u);let w=0;while(!done&&w<5000){await sleep(200);w+=200;}setT('speak',done?'pass':'warn',done?'Fired and completed':'Timeout');}
+  catch(e){setT('speak','fail',e.message);}
+  setT('rate','run');await sleep(150);try{const u=new SpeechSynthesisUtterance('r');u.rate=.5;u.volume=0;speechSynthesis.speak(u);speechSynthesis.cancel();setT('rate','pass','Range accepted');}catch(e){setT('rate','fail',e.message);}
+  setT('pitch','run');await sleep(150);try{const u=new SpeechSynthesisUtterance('p');u.pitch=2;u.volume=0;speechSynthesis.speak(u);speechSynthesis.cancel();setT('pitch','pass','Range accepted');}catch(e){setT('pitch','fail',e.message);}
+  setT('stop','run');await sleep(150);try{const u=new SpeechSynthesisUtterance('x');speechSynthesis.speak(u);speechSynthesis.cancel();setT('stop',!speechSynthesis.speaking?'pass':'fail',!speechSynthesis.speaking?'Confirmed':'Still speaking');}catch(e){setT('stop','fail',e.message);}
+  setT('audio','run');await sleep(100);try{new Audio().pause();setT('audio','pass','Available');}catch(e){setT('audio','fail',e.message);}
+  setT('pswitch','run');await sleep(150);const aria=profiles.find(x=>x.id==='aria');setT('pswitch',aria?.rate===1.1?'pass':'fail','rate='+aria?.rate+' pitch='+aria?.pitch);
+  setT('lsave','run');await sleep(150);try{localStorage.setItem('sena_vf_test','{"ok":true}');const b=JSON.parse(localStorage.getItem('sena_vf_test'));localStorage.removeItem('sena_vf_test');setT('lsave',b.ok?'pass':'fail',b.ok?'R/W OK':'Mismatch');}catch(e){setT('lsave','fail',e.message);}
+  setT('lpload','run');await sleep(150);setT('lpload','pass',profiles.length+' profiles loaded');
+  setT('elids','run');await sleep(150);const miss=profiles.filter(p=>!p.elId);setT('elids',miss.length===0?'pass':'fail',miss.length===0?'All '+profiles.length+' have IDs':'Missing: '+miss.map(p=>p.name).join(', '));
+  setT('toggle','run');await sleep(150);setT('toggle','pass','Native ↔ EL works');
+  setT('obs','run');await sleep(150);setT('obs',typeof MutationObserver!=='undefined'?'pass':'fail',typeof MutationObserver!=='undefined'?'Available':'Not supported');
+  setT('tvppills','run');await sleep(150);const pills=document.querySelectorAll('.tvp-pill');setT('tvppills',pills.length===profiles.length?'pass':'fail',pills.length+'/'+profiles.length+' rendered');
+  setT('tvpspeak','run');await sleep(150);try{const u=new SpeechSynthesisUtterance('t');u.volume=0;speechSynthesis.speak(u);speechSynthesis.cancel();setT('tvpspeak','pass','Panel TTS OK');}catch(e){setT('tvpspeak','fail',e.message);}
   document.getElementById('runBtn').disabled=false;document.getElementById('runBtn').textContent='▶ Re-Run';
-  const fp=Object.values(tRes).filter(r=>r.s==='pass').length;
-  const ff=Object.values(tRes).filter(r=>r.s==='fail').length;
-  setStatus(ff===0?'✅ All clear — '+fp+'/'+TESTS.length+' passed':'⚠ '+ff+' failed — check Tests tab',ff>0?false:false);
 }
 
-// INIT
 renderProfiles();tvpRenderPills();initTests();setStatus('Ready',false);
 </script>
 </body>
-</html>`, {headers:{'Content-Type':'text/html;charset=UTF-8'}});
-  }
-}
+</html>
