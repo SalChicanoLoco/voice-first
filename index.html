@@ -1,482 +1,569 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VOICE-FIRST — Sena's AI Tech LLC</title>
-<style>
-:root{--bg:#0d0d0f;--s:#1a1a1f;--s2:#13131a;--b:#2a2a35;--a:#7c6af7;--a2:#4fc3f7;--el:#f5a623;--g:#4ff7a0;--d:#f76a6a;--t:#e8e8f0;--m:#6b6b80;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--t);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;font-size:13px;}
-.hdr{background:var(--s2);border-bottom:1px solid var(--b);padding:10px 16px;display:flex;align-items:center;gap:10px;}
-.hdr-logo{color:var(--a);font-size:1.1rem;}
-.hdr-t{font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
-.hdr-s{font-size:.65rem;color:var(--m);}
-.hdr-st{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:.72rem;color:#a8a8c0;}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--g);}
-.dot.sp{background:var(--a);animation:glow 1s infinite;}
-.dot.li{background:var(--a2);animation:glow .8s infinite;}
-@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(124,106,247,.5)}50%{box-shadow:0 0 0 6px rgba(124,106,247,0)}}
-.tabs{display:flex;background:var(--s2);border-bottom:1px solid var(--b);}
-.tab{padding:9px 18px;font-size:.75rem;font-weight:700;cursor:pointer;color:var(--m);border-bottom:2px solid transparent;transition:all .2s;}
-.tab.on{color:var(--a);border-bottom-color:var(--a);}
-.main{padding:16px;max-width:800px;margin:0 auto;}
-.pane{display:none;}.pane.on{display:block;}
-.lbl{font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--m);margin-bottom:7px;margin-top:14px;}
-.lbl:first-child{margin-top:0;}
-.mbar{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
-.tgl{display:flex;border:1px solid var(--b);border-radius:6px;overflow:hidden;}
-.tbtn{padding:5px 12px;font-size:.72rem;font-weight:700;border:none;cursor:pointer;background:transparent;color:var(--m);transition:all .2s;}
-.tbtn.na{background:var(--a);color:#fff;}
-.tbtn.el{background:var(--el);color:#000;}
-.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:7px;margin-bottom:14px;}
-.pc{background:var(--s);border:1px solid var(--b);border-radius:9px;padding:10px;cursor:pointer;transition:all .2s;position:relative;}
-.pc:hover{border-color:var(--a);}
-.pc.on{background:#1e1a35;border-color:var(--a);box-shadow:0 0 10px rgba(124,106,247,.2);}
-.pc-n{font-size:.82rem;font-weight:700;margin-bottom:2px;}
-.pc-r{font-size:.65rem;color:var(--m);margin-bottom:5px;}
-.tags{display:flex;gap:3px;flex-wrap:wrap;}
-.tag{font-size:.58rem;padding:1px 5px;border-radius:20px;background:rgba(124,106,247,.12);color:var(--a);border:1px solid rgba(124,106,247,.25);}
-.adot{position:absolute;top:7px;right:7px;width:6px;height:6px;border-radius:50%;background:var(--g);display:none;}
-.pc.on .adot{display:block;}
-.srow{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
-.sg{flex:1;min-width:100px;}
-.sl{font-size:.65rem;color:var(--m);display:flex;justify-content:space-between;margin-bottom:3px;}
-input[type=range]{width:100%;accent-color:var(--a);height:3px;}
-select{background:var(--s);border:1px solid var(--b);color:var(--t);border-radius:6px;padding:5px 9px;font-size:.78rem;outline:none;width:100%;}
-textarea{width:100%;background:var(--s);border:1px solid var(--b);color:var(--t);border-radius:8px;padding:10px;font-size:.84rem;line-height:1.6;resize:vertical;min-height:80px;outline:none;margin-bottom:10px;}
-textarea:focus{border-color:var(--a);}
-.brow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
-button{padding:8px 15px;border-radius:7px;border:none;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .2s;}
-.bp{background:var(--a);color:#fff;}
-.bp:hover{background:#6a59e0;}
-.bp.el{background:var(--el);color:#000;}
-.bd{background:transparent;color:var(--d);border:1px solid var(--d);}
-.bm{background:transparent;color:var(--a2);border:1px solid var(--a2);}
-.bm.on{background:rgba(79,195,247,.12);}
-.trbox{background:var(--s);border:1px dashed var(--b);border-radius:8px;padding:8px 12px;font-size:.78rem;color:var(--m);min-height:34px;font-style:italic;}
-hr{border:none;border-top:1px solid var(--b);margin:14px 0;}
-.demo-out{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:14px;min-height:70px;line-height:1.7;font-size:.86rem;margin-bottom:10px;}
-.dbrow{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px;}
-.db{background:var(--s);color:#a8a8c0;border:1px solid var(--b);border-radius:7px;padding:6px 12px;font-size:.74rem;font-weight:700;cursor:pointer;}
-.db:hover{border-color:var(--a);color:var(--t);}
-.th{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
-.sbar-w{flex:1;background:#0d0d0f;border-radius:4px;height:5px;min-width:60px;}
-.sbar{background:var(--g);height:100%;border-radius:4px;transition:width .4s;}
-.sc{display:flex;gap:12px;font-size:.75rem;}
-.tcat{font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--m);margin:10px 0 5px;}
-.tr{background:var(--s);border:1px solid var(--b);border-radius:6px;padding:6px 11px;display:flex;align-items:center;gap:9px;margin-bottom:4px;}
-.tr.pass{border-color:#2a4a2a;}.tr.fail{border-color:#4a2a2a;}.tr.warn{border-color:#4a3a1a;}
-.ti{font-size:12px;min-width:16px;}.tn{flex:1;font-size:.76rem;}
-.tm{font-size:.65rem;color:var(--m);text-align:right;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.cbox{background:#0a0a0c;border:1px solid var(--b);border-radius:8px;padding:9px 11px;max-height:160px;overflow-y:auto;font-family:monospace;font-size:10px;line-height:1.7;margin-top:12px;}
-#tvp{position:fixed;bottom:16px;right:16px;width:280px;background:var(--s2);border:1px solid var(--b);border-radius:13px;box-shadow:0 8px 28px rgba(0,0,0,.7);z-index:9999;overflow:hidden;transition:all .3s;font-size:12px;}
-#tvp.coll{width:152px;}
-#tvp-h{display:flex;align-items:center;gap:7px;padding:8px 12px;background:#1a1a2a;border-bottom:1px solid var(--b);cursor:pointer;user-select:none;}
-#tvp-h:hover{background:#1e1e30;}
-.tvp-t{font-size:.72rem;font-weight:700;flex:1;letter-spacing:.05em;}
-.tvp-d{width:6px;height:6px;border-radius:50%;background:var(--g);}
-.tvp-d.sp{background:var(--a);animation:glow 1s infinite;}
-.tvp-chev{color:var(--m);font-size:.6rem;transition:transform .3s;}
-#tvp.coll .tvp-chev{transform:rotate(180deg);}
-#tvp-b{padding:10px 12px;}
-#tvp.coll #tvp-b{display:none;}
-.tvp-pills{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;}
-.tvp-pill{font-size:.62rem;padding:2px 7px;border-radius:20px;background:var(--s);border:1px solid var(--b);color:var(--m);cursor:pointer;font-weight:700;transition:all .2s;}
-.tvp-pill.on{background:rgba(124,106,247,.12);border-color:var(--a);color:var(--a);}
-.tvp-auto{display:flex;align-items:center;gap:7px;margin-bottom:8px;}
-.tvp-al{font-size:.65rem;color:var(--m);flex:1;}
-.tvp-last{background:#0d0d0f;border:1px dashed var(--b);border-radius:5px;padding:4px 8px;font-size:.65rem;color:#a8a8c0;margin-bottom:8px;overflow:hidden;max-height:34px;display:none;}
-.tvp-ctls{display:flex;gap:5px;}
-.tvp-btn{flex:1;padding:5px;border-radius:5px;border:none;font-size:.7rem;font-weight:700;cursor:pointer;}
-.tvp-sp{background:var(--a);color:#fff;}
-.tvp-st{background:transparent;color:var(--d);border:1px solid var(--d);}
-.tvp-sl{font-size:.62rem;color:var(--m);margin-top:6px;text-align:center;}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sena's AI Collective | AI Team-as-a-Service</title>
+  <meta name="description" content="AI-powered mini teams for nonprofits, community organizations, and mission-driven groups. Research, writing, strategy, and admin support at a fraction of traditional overhead.">
+  <style>
+    :root {
+      --ink: #0f0d0a;
+      --paper: #f7f2e8;
+      --rust: #c2603a;
+      --gold: #d4a017;
+      --sage: #4a6741;
+      --smoke: #e8e0d0;
+      --muted: #7d7467;
+      --panel: #16120d;
+      --line: rgba(15,13,10,0.10);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.5;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .wrap {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(8px);
+      background: rgba(247,242,232,0.88);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 68px;
+    }
+
+    .brand {
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .brand small {
+      display: block;
+      font-weight: 400;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 13px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      font-weight: 700;
+      transition: 0.18s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn.primary {
+      background: var(--rust);
+      color: var(--paper);
+      border-color: var(--rust);
+    }
+    .btn.secondary {
+      background: transparent;
+      color: var(--ink);
+    }
+    .btn.ghost {
+      background: rgba(255,255,255,0.45);
+      color: var(--ink);
+    }
+
+    .hero {
+      padding: 84px 0 58px;
+      background:
+        radial-gradient(circle at top right, rgba(194,96,58,0.10), transparent 28%),
+        linear-gradient(180deg, #fbf7f0 0%, var(--paper) 100%);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0 0 18px;
+      font-size: clamp(38px, 7vw, 76px);
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      max-width: 900px;
+    }
+
+    .hero p.lead {
+      margin: 0;
+      max-width: 760px;
+      font-size: 20px;
+      color: #3f382f;
+      line-height: 1.65;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 22px;
+      margin-top: 34px;
+      align-items: stretch;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.48);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .stat {
+      background: var(--panel);
+      color: var(--paper);
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 34px;
+      line-height: 1;
+      margin-bottom: 8px;
+      color: var(--rust);
+    }
+
+    .stat span {
+      font-size: 13px;
+      color: rgba(247,242,232,0.74);
+    }
+
+    .mini-note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    section.block {
+      padding: 62px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: clamp(28px, 4vw, 46px);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+    }
+
+    .section-lead {
+      max-width: 720px;
+      color: #4d4438;
+      font-size: 18px;
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .service {
+      background: #fffdfa;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px;
+    }
+
+    .service .tag {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--rust);
+      margin-bottom: 10px;
+    }
+
+    .service h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .service p {
+      margin: 0;
+      color: #544b40;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+
+    .list {
+      margin: 0;
+      padding-left: 18px;
+      color: #544b40;
+    }
+
+    .list li {
+      margin: 0 0 12px;
+      line-height: 1.65;
+    }
+
+    .pricing {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .price {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 24px;
+      background: #fffdfa;
+    }
+
+    .price.featured {
+      background: var(--panel);
+      color: var(--paper);
+      border-color: var(--rust);
+    }
+
+    .price .tier {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--rust);
+      margin-bottom: 12px;
+    }
+
+    .price h3 {
+      margin: 0 0 8px;
+      font-size: 26px;
+    }
+
+    .amount {
+      font-size: 42px;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .sub {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .price.featured .sub {
+      color: rgba(247,242,232,0.65);
+    }
+
+    .price ul {
+      margin: 0;
+      padding-left: 18px;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .cta {
+      background: var(--rust);
+      color: var(--paper);
+      padding: 72px 0;
+    }
+
+    .cta h2 {
+      color: var(--paper);
+      max-width: 760px;
+    }
+
+    .cta p {
+      max-width: 720px;
+      font-size: 18px;
+      line-height: 1.7;
+      color: rgba(247,242,232,0.82);
+    }
+
+    .cta .btn.primary {
+      background: var(--paper);
+      color: var(--rust);
+      border-color: var(--paper);
+    }
+
+    .cta .btn.secondary {
+      color: var(--paper);
+      border-color: rgba(247,242,232,0.35);
+    }
+
+    footer {
+      padding: 28px 0 44px;
+      font-size: 14px;
+      color: var(--muted);
+      background: #fbf8f2;
+    }
+
+    .footer-grid {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .split, .pricing, .service-grid, .stat-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav {
+        align-items: flex-start;
+        padding: 12px 0;
+        flex-direction: column;
+      }
+
+      .hero {
+        padding-top: 56px;
+      }
+
+      h1 {
+        line-height: 1.0;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="hdr">
-  <span class="hdr-logo">⬡</span>
-  <div><div class="hdr-t">VOICE-FIRST</div><div class="hdr-s">Sena's AI Tech LLC · v1.0-rc1</div></div>
-  <div class="hdr-st"><div class="dot" id="hDot"></div><span id="hStatus">Ready</span></div>
-</div>
-<div class="tabs">
-  <div class="tab on" onclick="showTab('voice',this)">🔊 Voice</div>
-  <div class="tab" onclick="showTab('embed',this)">⬡ Embed</div>
-  <div class="tab" onclick="showTab('test',this)">🧪 Tests</div>
-</div>
-<div class="main">
-<div class="pane on" id="pane-voice">
-  <div class="mbar">
-    <span style="font-size:.72rem;font-weight:700;color:var(--m)">Engine:</span>
-    <div class="tgl">
-      <button class="tbtn na" id="btnN" onclick="setMode('native')">🔊 Native</button>
-      <button class="tbtn" id="btnEL" onclick="setMode('elevenlabs')">⚡ ElevenLabs</button>
-    </div>
-    <div id="elKeyWrap" style="display:none;flex:1;min-width:200px;gap:8px;align-items:center;">
-      <input type="password" id="elApiKey" placeholder="ElevenLabs API key…" oninput="localStorage.setItem('sena_el_key',this.value)" style="flex:1;background:#0d0d0f;border:1px solid rgba(245,166,35,.3);color:var(--t);border-radius:6px;padding:5px 9px;font-size:.72rem;outline:none;">
-      <span style="font-size:.62rem;padding:2px 7px;border-radius:20px;background:rgba(245,166,35,.1);color:var(--el);border:1px solid rgba(245,166,35,.3);white-space:nowrap;">local only</span>
-    </div>
-  </div>
-  <div class="lbl">Voice Profiles</div>
-  <div class="pgrid" id="pgrid"></div>
-  <div id="nativeTuning">
-    <div class="lbl">Native Tuning</div>
-    <div style="margin-bottom:8px;"><div class="sl"><span>System Voice</span></div><select id="voiceSelect" style="margin-top:4px;"></select></div>
-    <div class="srow">
-      <div class="sg"><div class="sl"><span>Rate</span><span id="rV">1.00</span></div><input type="range" id="rS" min=".5" max="2" step=".05" value="1" oninput="document.getElementById('rV').textContent=parseFloat(this.value).toFixed(2)"></div>
-      <div class="sg"><div class="sl"><span>Pitch</span><span id="pV">1.00</span></div><input type="range" id="pS" min=".5" max="2" step=".05" value="1" oninput="document.getElementById('pV').textContent=parseFloat(this.value).toFixed(2)"></div>
-      <div class="sg"><div class="sl"><span>Vol</span><span id="vV">1.00</span></div><input type="range" id="vS" min="0" max="1" step=".05" value="1" oninput="document.getElementById('vV').textContent=parseFloat(this.value).toFixed(2)"></div>
-    </div>
-  </div>
-  <div id="elTuning" style="display:none">
-    <div class="lbl">EL Voice ID</div>
-    <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">
-      <input type="text" id="elVId" placeholder="Voice ID for active profile…" oninput="saveElId()" style="flex:1;background:#0d0d0f;border:1px solid rgba(245,166,35,.25);color:var(--t);border-radius:6px;padding:5px 9px;font-size:.78rem;outline:none;">
-      <span id="elVName" style="font-size:.62rem;padding:2px 7px;border-radius:20px;background:rgba(245,166,35,.1);color:var(--el);border:1px solid rgba(245,166,35,.3);">—</span>
-    </div>
-    <div class="srow">
-      <div class="sg"><div class="sl"><span>Stability</span><span id="stV">.50</span></div><input type="range" id="stS" min="0" max="1" step=".05" value=".5" oninput="document.getElementById('stV').textContent=parseFloat(this.value).toFixed(2)"></div>
-      <div class="sg"><div class="sl"><span>Similarity</span><span id="siV">.75</span></div><input type="range" id="siS" min="0" max="1" step=".05" value=".75" oninput="document.getElementById('siV').textContent=parseFloat(this.value).toFixed(2)"></div>
-    </div>
-  </div>
-  <hr>
-  <div class="lbl">Speak</div>
-  <textarea id="speakTxt" placeholder="Type or paste text to speak…"></textarea>
-  <div class="brow">
-    <button class="bp" id="speakBtn" onclick="doSpeak()">▶ Speak</button>
-    <button class="bd" onclick="doStop()">■ Stop</button>
-    <button class="bm" id="micBtn" onclick="toggleMic()">🎤 Listen</button>
-    <button style="background:transparent;color:var(--g);border:1px solid var(--g);padding:8px 15px;border-radius:7px;font-size:.72rem;font-weight:700;cursor:pointer;" onclick="saveToProfile()">💾 Save</button>
-  </div>
-  <div class="lbl">Transcript</div>
-  <div class="trbox" id="trbox">Transcript appears here after using Listen…</div>
-</div>
-<div class="pane" id="pane-embed">
-  <div class="lbl">Simulated NUMARA Output</div>
-  <div class="demo-out" id="demoOut">Aria is watching this container. Enable Auto-speak on the panel then hit a sim button.</div>
-  <div class="dbrow">
-    <button class="db" onclick="sim('grant')">📄 Grant</button>
-    <button class="db" onclick="sim('gis')">🗺 GIS</button>
-    <button class="db" onclick="sim('data')">📊 Data</button>
-    <button class="db" onclick="sim('clear')">✕ Clear</button>
-  </div>
-  <div style="font-size:.74rem;color:var(--m);line-height:1.7;background:var(--s);border:1px solid var(--b);border-radius:8px;padding:10px 14px;">
-    The floating panel ⬡ (bottom-right) watches <code style="color:var(--a)">#demoOut</code> via MutationObserver. Point <code style="color:var(--a)">TV_CONFIG.target</code> at NUMARA's output container to embed.
-  </div>
-</div>
-<div class="pane" id="pane-test">
-  <div class="th">
-    <div><div style="font-size:.8rem;font-weight:700;">Team QA Suite</div><div style="font-size:.65rem;color:var(--m);">Sprint 003 · 16 tests</div></div>
-    <div class="sc">
-      <span style="color:var(--g)">✅ <span id="tP">0</span></span>
-      <span style="color:var(--d)">❌ <span id="tF">0</span></span>
-      <span style="color:var(--el)">⚠️ <span id="tW">0</span></span>
-      <span style="color:var(--m)">⏭ <span id="tS">0</span></span>
-    </div>
-    <div class="sbar-w"><div class="sbar" id="sbar" style="width:0%"></div></div>
-    <button class="bp" id="runBtn" onclick="runTests()">▶ Run Tests</button>
-  </div>
-  <div id="testList"></div>
-  <div class="cbox" id="cbox" style="display:none"></div>
-</div>
-</div>
-
-<div id="tvp">
-  <div id="tvp-h" onclick="document.getElementById('tvp').classList.toggle('coll')">
-    <span style="color:var(--a)">⬡</span>
-    <span class="tvp-t">Team Voice</span>
-    <div class="tvp-d" id="tvpDot"></div>
-    <span class="tvp-chev">▲</span>
-  </div>
-  <div id="tvp-b">
-    <div class="tvp-pills" id="tvpPills"></div>
-    <div class="tvp-auto">
-      <span class="tvp-al">Auto-speak output</span>
-      <div id="tvpSw" onclick="tvpToggleAuto()" style="width:28px;height:16px;border-radius:16px;background:rgba(124,106,247,.35);cursor:pointer;position:relative;transition:background .3s;">
-        <div id="tvpKnob" style="position:absolute;top:2px;left:14px;width:12px;height:12px;border-radius:50%;background:var(--a);transition:left .3s;"></div>
+  <header class="topbar">
+    <div class="wrap nav">
+      <div class="brand">
+        Sena's AI Collective
+        <small>AI Team-as-a-Service · Santa Fe, NM</small>
+      </div>
+      <div class="nav-links">
+        <a class="btn ghost" href="https://pitch.senacolectivo.com">View Deck</a>
+        <a class="btn secondary" href="#pricing">Pricing</a>
+        <a class="btn primary" href="mailto:schicanoloco@gmail.com?subject=Free%2030-minute%20audit%20request">Book a Free Audit</a>
       </div>
     </div>
-    <div class="tvp-last" id="tvpLast"></div>
-    <div class="tvp-ctls">
-      <button class="tvp-btn tvp-sp" onclick="tvpSpeak()">▶ Speak</button>
-      <button class="tvp-btn tvp-st" onclick="speechSynthesis.cancel()">■</button>
-      <button class="tvp-btn" style="background:transparent;color:var(--a2);border:1px solid var(--a2);flex:0;padding:5px 9px;" onclick="tvpMic()">🎤</button>
+  </header>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Built for nonprofits, community groups, and mission-driven teams</div>
+      <h1>Your grant writer costs too much. We fix that.</h1>
+      <p class="lead">
+        Sena's AI Collective deploys practical AI mini teams for research, writing, strategy, and admin support.
+        You keep human judgment. We remove repetitive overhead.
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn primary" href="https://pitch.senacolectivo.com">Open the deck</a>
+        <a class="btn secondary" href="mailto:schicanoloco@gmail.com?subject=Free%2030-minute%20audit%20request">Schedule a free 30-minute audit</a>
+      </div>
+
+      <div class="hero-grid">
+        <div class="card">
+          <h2 style="font-size:32px; margin-bottom:10px;">What we do</h2>
+          <p class="section-lead" style="margin:0;">
+            We design lightweight AI teams that help organizations research faster, draft stronger materials,
+            stay on top of deadlines, and preserve institutional knowledge without adding full-time overhead.
+          </p>
+          <p class="mini-note">
+            Bilingual EN/ES support. Built for real-world community work, not generic enterprise theater.
+          </p>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat">
+            <strong>70%</strong>
+            <span>Potential reduction in overhead versus a traditional staffing model</span>
+          </div>
+          <div class="stat">
+            <strong>3×</strong>
+            <span>More grant throughput when research and first drafts are accelerated</span>
+          </div>
+          <div class="stat">
+            <strong>4</strong>
+            <span>Core roles covered: research, writing, strategy, and admin</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="tvp-sl" id="tvpSl">Ready · Aria</div>
-  </div>
-</div>
+  </section>
 
-<script>
-const PKEY='sena_vf_v3';
-const DEFS=[
-  {id:'salvador',name:'Salvador',role:'Architect',tags:['deep','slow'],  rate:.88,pitch:.85,vol:1,hint:'Male',  elId:'pNInz6obpgDQGcFmaJgB',elName:'Adam'  },
-  {id:'aria',    name:'Aria',    role:'AI Lead',  tags:['crisp','fast'], rate:1.1, pitch:1.05,vol:1,hint:'Female',elId:'21m00Tcm4TlvDq8ikWAM',elName:'Rachel'},
-  {id:'nova',    name:'NOVA',    role:'Creative', tags:['warm','mid'],   rate:.95,pitch:1.1, vol:1,hint:'Female',elId:'AZnzlk1XvdvUeBnXmlld',elName:'Domi'  },
-  {id:'quetzal', name:'Quetzal', role:'Data',     tags:['neutral'],      rate:1,  pitch:.95, vol:1,hint:'Male',  elId:'TxGEqnHWrfWFTfGW9XjX',elName:'Josh'  },
-  {id:'guest',   name:'Guest',   role:'Visitor',  tags:['gentle','slow'],rate:.85,pitch:1.15,vol:.9,hint:'Female',elId:'MF3mGyEYCl7XYWbV9V6O',elName:'Elli'  },
-];
-let profiles=loadP(),activeId='aria',mode='native',voices=[],recog=null,isListening=false,elAudio=null,tvpId='aria',tvpAuto=true,tvpLastTxt='';
-function loadP(){try{const s=localStorage.getItem(PKEY);return s?JSON.parse(s):JSON.parse(JSON.stringify(DEFS));}catch{return JSON.parse(JSON.stringify(DEFS));}}
-function saveP(){localStorage.setItem(PKEY,JSON.stringify(profiles));}
-const getP=(id)=>profiles.find(x=>x.id===(id||activeId));
+  <section class="block">
+    <div class="wrap">
+      <h2>Mini teams, not hype</h2>
+      <p class="section-lead">
+        Each deployment is tailored to the organization. The goal is simple: free up human staff to focus on relationships,
+        decision-making, and mission-critical work.
+      </p>
 
-function showTab(t,el){
-  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
-  document.querySelectorAll('.tab').forEach(tb=>tb.classList.remove('on'));
-  document.getElementById('pane-'+t).classList.add('on');
-  el.classList.add('on');
-}
+      <div class="service-grid">
+        <div class="service">
+          <div class="tag">Research</div>
+          <h3>Rox</h3>
+          <p>Funder research, literature synthesis, policy support, and source collection in a fraction of the usual time.</p>
+        </div>
+        <div class="service">
+          <div class="tag">Writing</div>
+          <h3>Grant</h3>
+          <p>First-draft narratives, letters of inquiry, budget justifications, and reporting support tailored to the target.</p>
+        </div>
+        <div class="service">
+          <div class="tag">Strategy</div>
+          <h3>Nova</h3>
+          <p>Pipeline tracking, deadline awareness, funder mapping, and higher-level coordination across opportunities.</p>
+        </div>
+        <div class="service">
+          <div class="tag">Admin</div>
+          <h3>Aria</h3>
+          <p>Compliance support, board communications, workflow continuity, and institutional memory retention.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-function renderProfiles(){
-  document.getElementById('pgrid').innerHTML=profiles.map(p=>`
-    <div class="pc${p.id===activeId?' on':''}" onclick="activateProfile('${p.id}')">
-      <div class="adot"></div>
-      <div class="pc-n">${p.name}</div><div class="pc-r">${p.role}</div>
-      <div class="tags">${p.tags.map(t=>'<span class="tag">'+t+'</span>').join('')}${mode==='elevenlabs'?'<span class="tag" style="background:rgba(245,166,35,.1);color:var(--el);border-color:rgba(245,166,35,.25)">⚡'+p.elName+'</span>':''}</div>
-    </div>`).join('');
-}
+  <section class="block">
+    <div class="wrap split">
+      <div class="card">
+        <h2 style="font-size:32px;">Who this is for</h2>
+        <ul class="list">
+          <li>Nonprofits with limited staff capacity</li>
+          <li>Community organizations managing multiple deadlines</li>
+          <li>Teams that need bilingual EN/ES operational support</li>
+          <li>Organizations that want practical AI without vendor lock-in theater</li>
+        </ul>
+      </div>
 
-function activateProfile(id){
-  activeId=id;const p=getP();
-  document.getElementById('rS').value=p.rate;document.getElementById('rV').textContent=p.rate.toFixed(2);
-  document.getElementById('pS').value=p.pitch;document.getElementById('pV').textContent=p.pitch.toFixed(2);
-  document.getElementById('vS').value=p.vol;document.getElementById('vV').textContent=p.vol.toFixed(2);
-  matchHint(p.hint);
-  if(mode==='elevenlabs'){document.getElementById('elVId').value=p.elId||'';document.getElementById('elVName').textContent=p.elName||'—';}
-  setStatus('Profile: '+p.name,false);renderProfiles();tvpRenderPills();
-}
+      <div class="card">
+        <h2 style="font-size:32px;">How it works</h2>
+        <ul class="list">
+          <li>We review your current workflow and identify bottlenecks.</li>
+          <li>We configure an AI mini team around your actual process.</li>
+          <li>Your staff stays in control of review, judgment, and submission.</li>
+          <li>You own the operational relationship and can scale from there.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-function saveElId(){const p=getP();p.elId=document.getElementById('elVId').value.trim();saveP();}
+  <section class="block" id="pricing">
+    <div class="wrap">
+      <h2>Simple pricing</h2>
+      <p class="section-lead">
+        Fast to deploy, easy to understand, and built to reduce overhead instead of adding another bloated subscription layer.
+      </p>
 
-function saveToProfile(){
-  const p=getP();
-  p.rate=parseFloat(document.getElementById('rS').value);
-  p.pitch=parseFloat(document.getElementById('pS').value);
-  p.vol=parseFloat(document.getElementById('vS').value);
-  if(mode==='elevenlabs')p.elId=document.getElementById('elVId').value.trim();
-  saveP();setStatus('Saved → '+p.name,false);
-}
+      <div class="pricing">
+        <div class="price">
+          <div class="tier">Starter</div>
+          <h3>Mini Team</h3>
+          <div class="amount">$1,500</div>
+          <div class="sub">One-time setup + $600/year maintenance</div>
+          <ul>
+            <li>2 AI agents</li>
+            <li>Org voice alignment</li>
+            <li>Template library</li>
+            <li>Email workflow support</li>
+          </ul>
+        </div>
 
-function setMode(m){
-  mode=m;
-  document.getElementById('btnN').className='tbtn'+(m==='native'?' na':'');
-  document.getElementById('btnEL').className='tbtn'+(m==='elevenlabs'?' el':'');
-  document.getElementById('elKeyWrap').style.display=m==='elevenlabs'?'flex':'none';
-  document.getElementById('nativeTuning').style.display=m==='native'?'block':'none';
-  document.getElementById('elTuning').style.display=m==='elevenlabs'?'block':'none';
-  const sb=document.getElementById('speakBtn');
-  sb.className='bp'+(m==='elevenlabs'?' el':'');
-  sb.textContent=m==='elevenlabs'?'⚡ Speak (EL)':'▶ Speak';
-  if(m==='elevenlabs'){const k=localStorage.getItem('sena_el_key');if(k)document.getElementById('elApiKey').value=k;const p=getP();document.getElementById('elVId').value=p.elId||'';document.getElementById('elVName').textContent=p.elName||'—';}
-  renderProfiles();setStatus('Engine: '+(m==='native'?'Native':'ElevenLabs'),false);
-}
+        <div class="price featured">
+          <div class="tier">Most Popular</div>
+          <h3>Full Team</h3>
+          <div class="amount">$2,500</div>
+          <div class="sub">One-time setup + $1,200/year maintenance</div>
+          <ul>
+            <li>4 AI agents</li>
+            <li>Grant pipeline support</li>
+            <li>Research library</li>
+            <li>Bilingual EN/ES capability</li>
+            <li>Quarterly strategy sessions</li>
+          </ul>
+        </div>
 
-if(speechSynthesis.onvoiceschanged!==undefined)speechSynthesis.onvoiceschanged=loadVoices;
-setTimeout(loadVoices,400);
-function loadVoices(){
-  voices=speechSynthesis.getVoices();
-  const sel=document.getElementById('voiceSelect');
-  sel.innerHTML=voices.length?voices.map(v=>'<option value="'+v.name+'">'+v.name+' ('+v.lang+')</option>').join(''):'<option>No voices found</option>';
-  matchHint(getP().hint);
-}
-function matchHint(h){
-  if(!voices.length)return;
-  const lower=h.toLowerCase();
-  const m=voices.find(v=>(lower==='female'&&/zira|samantha|karen|moira|tessa|fiona|female|woman/i.test(v.name))||(lower==='male'&&/david|james|daniel|male|man/i.test(v.name)));
-  if(m)document.getElementById('voiceSelect').value=m.name;
-}
-function getVoice(hint){
-  const h=hint.toLowerCase();
-  return voices.find(v=>(h==='female'&&/zira|samantha|karen|moira|female|woman/i.test(v.name))||(h==='male'&&/david|james|daniel|male|man/i.test(v.name)))||voices[0];
-}
+        <div class="price">
+          <div class="tier">Enterprise</div>
+          <h3>Full License</h3>
+          <div class="amount">Custom</div>
+          <div class="sub">White-label + full team build-out</div>
+          <ul>
+            <li>Branding and naming customization</li>
+            <li>Source handoff</li>
+            <li>Staff training</li>
+            <li>Priority support and updates</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
 
-async function doSpeak(){
-  const txt=document.getElementById('speakTxt').value.trim();
-  if(!txt)return;doStop();
-  mode==='elevenlabs'?await speakEL(txt,activeId):speakNative(txt,activeId);
-}
-function speakNative(txt,pid){
-  const p=getP(pid);const utt=new SpeechSynthesisUtterance(txt);
-  const sel=document.getElementById('voiceSelect');
-  const v=voices.find(x=>x.name===sel?.value)||getVoice(p.hint);
-  if(v)utt.voice=v;
-  utt.rate=parseFloat(document.getElementById('rS').value);
-  utt.pitch=parseFloat(document.getElementById('pS').value);
-  utt.volume=parseFloat(document.getElementById('vS').value);
-  utt.onstart=()=>setStatus('Speaking · '+p.name,'sp');
-  utt.onend=()=>setStatus('Done · '+p.name,false);
-  utt.onerror=e=>setStatus('Error: '+e.error,false);
-  speechSynthesis.speak(utt);
-}
-async function speakEL(txt,pid){
-  const key=localStorage.getItem('sena_el_key')||document.getElementById('elApiKey')?.value.trim();
-  if(!key){setStatus('⚠ No EL API key',false);return;}
-  const p=getP(pid);if(!p.elId){setStatus('⚠ No EL voice ID for '+p.name,false);return;}
-  setStatus('⚡ EL → '+p.name,'sp');
-  try{
-    const res=await fetch('https://api.elevenlabs.io/v1/text-to-speech/'+p.elId+'/stream',{
-      method:'POST',headers:{'xi-api-key':key,'Content-Type':'application/json','Accept':'audio/mpeg'},
-      body:JSON.stringify({text:txt,model_id:'eleven_monolingual_v1',voice_settings:{stability:parseFloat(document.getElementById('stS').value),similarity_boost:parseFloat(document.getElementById('siS').value)}})
-    });
-    if(!res.ok){setStatus('EL '+res.status,false);return;}
-    const blob=await res.blob();const url=URL.createObjectURL(blob);
-    if(elAudio){elAudio.pause();elAudio=null;}
-    elAudio=new Audio(url);
-    elAudio.onended=()=>{setStatus('Done · '+p.name+' (EL)',false);URL.revokeObjectURL(url);};
-    elAudio.play();setStatus('⚡ '+p.name+' ('+p.elName+')','sp');
-  }catch(e){setStatus('EL error: '+e.message,false);}
-}
-function doStop(){speechSynthesis.cancel();if(elAudio){elAudio.pause();elAudio=null;}setStatus('Stopped',false);}
+  <section class="cta">
+    <div class="wrap">
+      <h2>Ready to shift your budget instead of expanding it?</h2>
+      <p>
+        We will review your current process, identify obvious friction points, and show where an AI team can actually help.
+        No generic pitch deck theater. Just a practical audit and a concrete next step.
+      </p>
+      <div class="hero-actions">
+        <a class="btn primary" href="mailto:schicanoloco@gmail.com?subject=Free%2030-minute%20audit%20request">Schedule a Free Audit</a>
+        <a class="btn secondary" href="https://pitch.senacolectivo.com">View the full deck</a>
+      </div>
+    </div>
+  </section>
 
-function toggleMic(){
-  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){setStatus('Mic: Chrome required',false);return;}
-  if(isListening){recog.stop();return;}
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  recog=new SR();recog.continuous=true;recog.interimResults=true;recog.lang='en-US';
-  recog.onstart=()=>{isListening=true;document.getElementById('micBtn').textContent='🔴 Stop';document.getElementById('micBtn').classList.add('on');setStatus('Listening…','li');};
-  recog.onresult=e=>{
-    let fin='',int='';
-    for(let i=e.resultIndex;i<e.results.length;i++){e.results[i].isFinal?fin+=e.results[i][0].transcript:int+=e.results[i][0].transcript;}
-    document.getElementById('trbox').innerHTML='<span>'+fin+'</span>'+(int?'<em style="color:var(--m)"> '+int+'</em>':'');
-    if(fin){const ta=document.getElementById('speakTxt');ta.value+=(ta.value?' ':'')+fin.trim();}
-  };
-  recog.onerror=e=>setStatus('Mic: '+e.error,false);
-  recog.onend=()=>{isListening=false;document.getElementById('micBtn').textContent='🎤 Listen';document.getElementById('micBtn').classList.remove('on');setStatus('Mic off',false);};
-  recog.start();
-}
-
-function setStatus(msg,state){
-  document.getElementById('hStatus').textContent=msg;
-  document.getElementById('hDot').className='dot'+(state?' '+state:'');
-}
-
-function tvpRenderPills(){
-  document.getElementById('tvpPills').innerHTML=profiles.map(p=>'<div class="tvp-pill'+(p.id===tvpId?' on':'')+'" onclick="tvpSetP(\''+p.id+'\')">'+p.name+'</div>').join('');
-}
-function tvpSetP(id){tvpId=id;tvpRenderPills();document.getElementById('tvpSl').textContent='Ready · '+getP(id).name;}
-function tvpToggleAuto(){
-  tvpAuto=!tvpAuto;
-  document.getElementById('tvpSw').style.background=tvpAuto?'rgba(124,106,247,.35)':'#2a2a35';
-  document.getElementById('tvpKnob').style.left=tvpAuto?'14px':'2px';
-  document.getElementById('tvpKnob').style.background=tvpAuto?'var(--a)':'#6b6b80';
-}
-function tvpSpeak(txt){
-  const p=getP(tvpId);const t=txt||document.getElementById('demoOut')?.innerText.trim()||'';if(!t)return;
-  speechSynthesis.cancel();const utt=new SpeechSynthesisUtterance(t);
-  const v=getVoice(p.hint);if(v)utt.voice=v;utt.rate=p.rate;utt.pitch=p.pitch;utt.volume=p.vol;
-  utt.onstart=()=>{document.getElementById('tvpDot').className='tvp-d sp';document.getElementById('tvpSl').textContent='Speaking · '+p.name;};
-  utt.onend=()=>{document.getElementById('tvpDot').className='tvp-d';document.getElementById('tvpSl').textContent='Done · '+p.name;};
-  const tl=document.getElementById('tvpLast');tl.textContent=t.length>55?t.slice(0,55)+'…':t;tl.style.display='block';
-  tvpLastTxt=t;speechSynthesis.speak(utt);
-}
-function tvpMic(){
-  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window))return;
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  const r=new SR();r.continuous=false;r.interimResults=false;r.lang='en-US';
-  r.onresult=e=>{const s=e.results[0][0].transcript;document.getElementById('tvpLast').textContent='🎤 "'+s+'"';tvpSpeak(s);};
-  r.start();
-}
-
-const tvpTarget=document.getElementById('demoOut');
-if(tvpTarget){
-  let lastTxt='';
-  new MutationObserver(()=>{
-    if(!tvpAuto)return;
-    const txt=tvpTarget.innerText.trim();
-    if(txt&&txt!==lastTxt){lastTxt=txt;setTimeout(()=>tvpSpeak(txt),300);}
-  }).observe(tvpTarget,{childList:true,subtree:true,characterData:true});
-}
-
-const SIMS={
-  grant:'Grant Assistant: NEA application updated. Section 3 — Artistic Merit scores 94 out of 100. Strengthen community impact narrative before submission.',
-  gis:'GIS Preflight: 3 layers loaded. CRS verified EPSG 4326. No conflicts. 847 features in bounds. Ready.',
-  data:'Quetzal: NUMARA API avg 210ms. Cache hit 87%. Recommend indexing project_id.',
-  clear:'Output cleared.'
-};
-function sim(t){document.getElementById('demoOut').textContent=SIMS[t]||'';}
-
-const TESTS=[
-  {id:'tts',cat:'Native',label:'Web Speech TTS API present'},
-  {id:'stt',cat:'Native',label:'Web Speech STT API present'},
-  {id:'voices',cat:'Native',label:'OS voices loaded'},
-  {id:'speak',cat:'Native',label:'TTS fires and completes'},
-  {id:'rate',cat:'Native',label:'Rate 0.5–2.0 accepted'},
-  {id:'pitch',cat:'Native',label:'Pitch 0.5–2.0 accepted'},
-  {id:'stop',cat:'Controls',label:'cancel() works'},
-  {id:'audio',cat:'Controls',label:'Audio.pause() available'},
-  {id:'pswitch',cat:'Profiles',label:'Profile params correct'},
-  {id:'lsave',cat:'Profiles',label:'localStorage R/W'},
-  {id:'lpload',cat:'Profiles',label:'Profiles in memory'},
-  {id:'elids',cat:'ElevenLabs',label:'All profiles have EL IDs'},
-  {id:'toggle',cat:'ElevenLabs',label:'Mode toggle works'},
-  {id:'obs',cat:'Embed',label:'MutationObserver available'},
-  {id:'tvppills',cat:'Embed',label:'Profile pills rendered'},
-  {id:'tvpspeak',cat:'Embed',label:'Panel TTS works'},
-];
-const SI={idle:'⬜',run:'🔄',pass:'✅',fail:'❌',warn:'⚠️',skip:'⏭️'};
-let tRes={},tLog=[];
-
-function initTests(){
-  tRes={};tLog=[];
-  const cats=[...new Set(TESTS.map(t=>t.cat))];
-  document.getElementById('testList').innerHTML=cats.map(cat=>
-    '<div class="tcat">'+cat+'</div>'+
-    TESTS.filter(t=>t.cat===cat).map(t=>
-      '<div class="tr" id="tr-'+t.id+'"><span class="ti" id="ti-'+t.id+'">⬜</span><span class="tn">'+t.label+'</span><span class="tm" id="tm-'+t.id+'"></span></div>'
-    ).join('')
-  ).join('');
-  updateScore();
-}
-
-function setT(id,s,msg=''){
-  tRes[id]={s,msg};
-  document.getElementById('ti-'+id).textContent=SI[s];
-  document.getElementById('tm-'+id).textContent=msg;
-  document.getElementById('tr-'+id).className='tr'+(s==='pass'?' pass':s==='fail'?' fail':s==='warn'?' warn':'');
-  tLog.push({s,text:'['+id+'] '+msg});
-  updateScore();
-  const cb=document.getElementById('cbox');cb.style.display='block';
-  cb.innerHTML=tLog.map(l=>'<div style="color:'+(l.s==='pass'?'var(--g)':l.s==='fail'?'var(--d)':'var(--m)')+'">'+l.text+'</div>').join('');
-  cb.scrollTop=cb.scrollHeight;
-}
-
-function updateScore(){
-  const v=Object.values(tRes);
-  document.getElementById('tP').textContent=v.filter(r=>r.s==='pass').length;
-  document.getElementById('tF').textContent=v.filter(r=>r.s==='fail').length;
-  document.getElementById('tW').textContent=v.filter(r=>r.s==='warn').length;
-  document.getElementById('tS').textContent=v.filter(r=>r.s==='skip').length;
-  document.getElementById('sbar').style.width=(v.filter(r=>r.s==='pass').length/TESTS.length*100)+'%';
-}
-
-function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
-
-async function runTests(){
-  document.getElementById('runBtn').disabled=true;document.getElementById('runBtn').textContent='🔄 Running…';
-  initTests();
-  setT('tts','run');await sleep(150);setT('tts','speechSynthesis' in window?'pass':'fail','speechSynthesis' in window?'Available':'Not found');
-  setT('stt','run');await sleep(150);const hasSR='webkitSpeechRecognition' in window||'SpeechRecognition' in window;setT('stt',hasSR?'pass':'warn',hasSR?'Available':'Chrome required');
-  setT('voices','run');await sleep(500);const v=speechSynthesis.getVoices();setT('voices',v.length>0?'pass':'warn',v.length+' voices loaded');
-  setT('speak','run');
-  try{let done=false;const u=new SpeechSynthesisUtterance('Voice first. Sena AI Tech.');u.volume=.4;u.onend=()=>done=true;u.onerror=()=>done=true;speechSynthesis.speak(u);let w=0;while(!done&&w<5000){await sleep(200);w+=200;}setT('speak',done?'pass':'warn',done?'Fired and completed':'Timeout');}
-  catch(e){setT('speak','fail',e.message);}
-  setT('rate','run');await sleep(150);try{const u=new SpeechSynthesisUtterance('r');u.rate=.5;u.volume=0;speechSynthesis.speak(u);speechSynthesis.cancel();setT('rate','pass','Range accepted');}catch(e){setT('rate','fail',e.message);}
-  setT('pitch','run');await sleep(150);try{const u=new SpeechSynthesisUtterance('p');u.pitch=2;u.volume=0;speechSynthesis.speak(u);speechSynthesis.cancel();setT('pitch','pass','Range accepted');}catch(e){setT('pitch','fail',e.message);}
-  setT('stop','run');await sleep(150);try{const u=new SpeechSynthesisUtterance('x');speechSynthesis.speak(u);speechSynthesis.cancel();setT('stop',!speechSynthesis.speaking?'pass':'fail',!speechSynthesis.speaking?'Confirmed':'Still speaking');}catch(e){setT('stop','fail',e.message);}
-  setT('audio','run');await sleep(100);try{new Audio().pause();setT('audio','pass','Available');}catch(e){setT('audio','fail',e.message);}
-  setT('pswitch','run');await sleep(150);const aria=profiles.find(x=>x.id==='aria');setT('pswitch',aria?.rate===1.1?'pass':'fail','rate='+aria?.rate+' pitch='+aria?.pitch);
-  setT('lsave','run');await sleep(150);try{localStorage.setItem('sena_vf_test','{"ok":true}');const b=JSON.parse(localStorage.getItem('sena_vf_test'));localStorage.removeItem('sena_vf_test');setT('lsave',b.ok?'pass':'fail',b.ok?'R/W OK':'Mismatch');}catch(e){setT('lsave','fail',e.message);}
-  setT('lpload','run');await sleep(150);setT('lpload','pass',profiles.length+' profiles loaded');
-  setT('elids','run');await sleep(150);const miss=profiles.filter(p=>!p.elId);setT('elids',miss.length===0?'pass':'fail',miss.length===0?'All '+profiles.length+' have IDs':'Missing: '+miss.map(p=>p.name).join(', '));
-  setT('toggle','run');await sleep(150);setT('toggle','pass','Native ↔ EL works');
-  setT('obs','run');await sleep(150);setT('obs',typeof MutationObserver!=='undefined'?'pass':'fail',typeof MutationObserver!=='undefined'?'Available':'Not supported');
-  setT('tvppills','run');await sleep(150);const pills=document.querySelectorAll('.tvp-pill');setT('tvppills',pills.length===profiles.length?'pass':'fail',pills.length+'/'+profiles.length+' rendered');
-  setT('tvpspeak','run');await sleep(150);try{const u=new SpeechSynthesisUtterance('t');u.volume=0;speechSynthesis.speak(u);speechSynthesis.cancel();setT('tvpspeak','pass','Panel TTS OK');}catch(e){setT('tvpspeak','fail',e.message);}
-  document.getElementById('runBtn').disabled=false;document.getElementById('runBtn').textContent='▶ Re-Run';
-}
-
-renderProfiles();tvpRenderPills();initTests();setStatus('Ready',false);
-</script>
+  <footer>
+    <div class="wrap footer-grid">
+      <div>Sena's AI Collective · Santa Fe, NM · schicanoloco@gmail.com</div>
+      <div>Bilingual EN/ES · Anthropic Claude Partner Network</div>
+    </div>
+  </footer>
 </body>
 </html>
